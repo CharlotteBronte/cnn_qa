@@ -16,6 +16,8 @@ reload(sys)
 sys.setdefaultencoding("utf-8")
 import gensim
 
+
+
 def train_lda(data_root):
     train = []
     stopwords = codecs.open(data_root+"stop_words",'r',encoding='utf8').readlines()
@@ -27,9 +29,9 @@ def train_lda(data_root):
 
     dictionary = gensim.corpora.Dictionary(train)
     corpus = [ dictionary.doc2bow(text) for text in train ]
-    print corpus
-    lda = LdaModel(corpus=corpus, id2word=dictionary, num_topics=5)
-    lda.print_topic(1)
+    lda = LdaModel(corpus=corpus, id2word=dictionary, num_topics=30)
+    print lda.print_topic(6)
+
 
 
 if __name__=="__main__":
