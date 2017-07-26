@@ -1,0 +1,2 @@
+# cnn_qa
+cnn实现的qa召回，在学习句子表示的同时得到满足当前业务反馈的word_embedding
