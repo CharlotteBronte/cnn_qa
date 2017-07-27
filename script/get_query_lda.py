@@ -81,12 +81,15 @@ class LdaClass:
         else:
             query_seg = jieba.cut(query, cut_all=False)
             doc_bow = self.dictionary.doc2bow(query_seg)
-            print(self.lda[doc_bow])
+    #        print(self.lda[doc_bow])
+            print get_document_topic(bow)
+
+
 
 if __name__ == "__main__":
     if sys.argv[1] == "train":
         lda_model = LdaClass(MODEL_PATH)
-        lda_model.build(sys.argv[2], 10)
+        lda_model.build(sys.argv[2], 100)
 
     if sys.argv[1] == "load":
         lda_model = LdaClass(MODEL_PATH)
