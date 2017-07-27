@@ -12,5 +12,11 @@ cnn实现的qa召回，在学习句子表示的同时得到满足当前业务反
 
 # File layout
   * script  
-    - get\_sentence\_lda.py  
-	  get currnt train query lda result and put it into local sqllite3 database  
+	- all runnable scripts, include gensim lda class and cnn smilarity class
+  * model
+    - dirctory to save model, include gensim and tf model
+  * log
+    - include lda\_log and tf_log 
+  * data
+    - train (with small and middle scale data, contact me with emial if you need all)
+	- test (test data after training)
