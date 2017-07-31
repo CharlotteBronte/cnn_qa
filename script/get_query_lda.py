@@ -12,6 +12,7 @@ import codecs
 from gensim.models import LdaModel
 from gensim.corpora import Dictionary
 from gensim.models import TfidfModel
+from gensim.models import ldamulticore
 import sys
 
 reload(sys)
@@ -69,7 +70,9 @@ class LdaClass:
         corpus = [self.dictionary.doc2bow(text) for text in train]
         tfidf = TfidfModel(corpus)
         corpus_tfidf = tfidf[corpus] 
-        self.lda = LdaModel(corpus=corpus_tfidf,id2word=self.dictionary, num_topics=topic_num)
+        #self.lda = LdaModel(corpus=corpus_tfidf,id2word=self.dictionary, num_topics=topic_num)
+	self.lda = ldamulticore.LdaMulticore(corpus=corpus_tfidf, num_topics=topic_num, id2word=self.dictionary, workers=10, chunksize=1000000) 
+
         self.logger.debug(self.lda.print_topic(6))
         self.dictionary.save(self.dic_path)
         self.lda.save(self.model_path)
@@ -79,21 +82,25 @@ class LdaClass:
         if len(query) == 0:
             self.logger.error("Empty query")
         else:
+	    print self.dictionary
             query_seg = jieba.cut(query, cut_all=False)
             doc_bow = self.dictionary.doc2bow(query_seg)
-    #        print(self.lda[doc_bow])
-            print get_document_topic(bow)
+	    print doc_bow
+            print(self.lda[doc_bow])
+            print(self.lda.get_document_topics(doc_bow))
+	    print self.lda
 
 
 
 if __name__ == "__main__":
     if sys.argv[1] == "train":
         lda_model = LdaClass(MODEL_PATH)
-        lda_model.build(sys.argv[2], 100)
+        lda_model.build(sys.argv[2], 10000)
 
     if sys.argv[1] == "load":
         lda_model = LdaClass(MODEL_PATH)
         lda_model.load()
+	print(lda_model)
         line = "Build finished, Input your query"
         while True:
             line = raw_input("Input your query:\n")
